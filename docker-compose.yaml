@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: evently-app
+    ports:
+      - "3000:3000"
+    volumes:
+      # NOTE: Ensure events.db exists as a file on your host before running, 
+      # or Docker might create it as a directory.
+      - evently_data:/app/data
+    environment:
+      - NODE_ENV=production
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    restart: always
+    # Running the server directly via npx to bypass npm script resolution issues
+    command: npx tsx server.ts
+
+volumes:
+  evently_data:
